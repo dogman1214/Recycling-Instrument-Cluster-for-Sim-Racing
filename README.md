@@ -1,25 +1,43 @@
-# Recycling-Instrument-Cluster-for-Sim-Racinig
-I am recycling a junked out car's instrument cluster, specifically Audi s5, and possibly an audi Q7, to work with digital racing games.
+# Audi B8.5 S5 Instrument Cluster over CAN (ESP32)
 
+Driving a real Audi S5 (B8.5) instrument cluster, salvaged from a junked car, using an ESP32 that sends synthetic CAN frames. The goal is to use the cluster as a physical dashboard for sim-racing games.
 
-So first, we will have to source some parts. What we need is:
-1: Instrument cluster (in this case, a B8.5 audi S5)
-2: ESP32 WROOM Devkit
-3: Dupont Cables of all male and female combinations
-4: SN65HVD230 CAN Reciever
-5: 12V DC power brick
-6: A laptop (preferably windows)
-7: A means of soldering wires together
+**Status:** RPM needle works. Speedometer is unsolved (see below).
 
+## Demo
+[Add a photo and a short video of the RPM needle moving. This is the most important part of the README.]
 
-To start off this project, first, we have to do the wiring.
+## Hardware
+- ESP32 ([board model])
+- CAN transceiver ([model, e.g. SN65HVD230])
+- Audi B8.5 S5 instrument cluster
+- [12V power supply, and how you wired the cluster's pins]
+- [Pinout diagram or table: cluster connector pin -> function]
 
-On the back of the AUDI S5's instrument cluster, there is a 32 pin board. You will be able to tell which order the pins go based on tiny stamps that say the pin number on each corner. For me, it is upside down with Pin 32 on top left and pin 1 on bottom right.
+## How it works
+The ESP32 uses its built-in CAN controller (TWAI driver) to send frames onto the bus the cluster listens to, mimicking what the car's ECU would send.
 
+### RPM (working)
+- CAN ID `0x107`, bytes 3-4 hold a 16-bit little-endian value.
+- Raw value = RPM / ~3.0 scale factor, plus a piecewise correction I found by testing. [Link to the code or table.]
+- [How you found it: sweeping values and watching the needle? A DBC file? Say which.]
 
-Dupont cables can generally handle only 1 amp. Our audi cluster requires up to 1.5 amps. Luckily, the instrument cluster reservs 2 pins for positive, and 2 pins for negative so we don't have to worry about that. But, For the wiring for power delivery, we will have to create a 3-way junction that connects to the 12v power brick for negative terminal, and a 2-way junction for the positive. We will have to use a thicker wire to solder to the power source which then splits 3 ways to the Audi Cluster same for the 2 way
+### Speedometer (not working yet)
+- The signal appears in the DBC as `KBI_angez_Geschw` on ID `0x30B` [say where the DBC came from].
+- Sweeping and brute-forcing values did not move the needle.
+- **Current theory:** the frame carries a CRC-8 (polynomial `0x2F`, the VAG/AUTOSAR E2E convention), and the cluster ignores frames with a wrong checksum. Not confirmed.
+- **Next step:** capture a real CAN trace from a running B8.5 to check the checksum and counter behavior.
 
-[INSERT IMAGE IF THE 3 WAY WIRING AND ALL]
+## Build and run
+[Toolchain (ESP-IDF or Arduino), build command, and how to flash.]
 
+## Repo layout
+[A short list of files and what each does.]
 
-With the DuPont cables, (BY THE WAY, THIS VARIES PER INSTRUMENT CLUSTER. PLEASE REFER TO YOUR WIRING DIAGRAM IF USING A DIFFERENT CLUSTER), 
+## Roadmap
+- [ ] Confirm the speedometer checksum with a real CAN trace
+- [ ] Other signals: [warning lights, gear indicator, etc., whichever you plan]
+- [ ] Hook up game telemetry ([SimHub / game name]) so the cluster follows the game
+
+## Notes and prior art
+Others have done this with BMW, Mazda, and Lada clusters. This repo documents the B8.5 S5 messages I decoded.
