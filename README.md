@@ -3,6 +3,7 @@
 Driving a real Audi S5 (B8.5) instrument cluster, salvaged from a junked car, using an ESP32 that sends synthetic CAN frames. The goal is to use the cluster as a physical dashboard for sim-racing games.
 
 **Status:** RPM needle works. Speedometer is unsolved (see below).
+Currently building in the "production.ino" file, where I input specific RPM and MPH values to see change. Planned for support for Simhub to connect to games.
 
 ## Demo
 [Add a photo and a short video of the RPM needle moving. This is the most important part of the README.]
