@@ -5,8 +5,8 @@ Driving a real Audi S5 (B8.5) instrument cluster, salvaged from a junked car, us
 **Status:** RPM needle works. Speedometer is unsolved (see below).
 Currently building in the "production.ino" file, where I input specific RPM and MPH values to see change. Planned for support for Simhub to connect to games.
 
-## Demo
-[Add a photo and a short video of the RPM needle moving. This is the most important part of the README.]
+<img width="1287" height="1716" alt="20260908_210059" src="https://github.com/user-attachments/assets/837acffd-fa63-4f09-a7bb-3973b02f3cc0" />
+
 
 ## Hardware
 - ESP32
