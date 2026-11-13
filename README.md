@@ -30,10 +30,7 @@ The ESP32 uses its built-in CAN controller (TWAI driver) to send frames onto the
 - **Next step:** capture a real CAN trace from a running B8.5 to check the checksum and counter behavior.
 
 ## Build and run
-[Toolchain (ESP-IDF or Arduino), build command, and how to flash.]
-
-## Repo layout
-[A short list of files and what each does.]
+Upload the "production.ino" into Arduino IDE, select your esp32, and upload.
 
 ## Roadmap
 - [ ] Confirm the speedometer checksum with a real CAN trace
